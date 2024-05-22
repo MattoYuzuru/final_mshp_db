@@ -1,0 +1,30 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write post</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <form method="post" action="{% url 'post_to_db' %}">
+        {% csrf_token %}
+        <h1>Article name</h1>
+        <div>
+            <input type="text" name="article_name" style=" font-size:20px;">
+        </div>
+        <br>
+        <h3>Article content</h3>
+        <div>
+            <textarea name="article_text" style="height: 200px; font-size:20px;"></textarea>
+        </div>
+        <button type="submit" id="make_post">Post</button>
+    </form>
+
+</body>
+</html>

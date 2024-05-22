@@ -1,0 +1,19 @@
+{% load static %}
+<form method="post">
+    {% csrf_token %}
+    <h2 >Registration</h2>
+    <div class="form-floating mt-5">
+        <input type="text"  id="id_login" autofocus placeholder="" name="formUsername" required>
+        <label for="id_login">Login</label>
+    </div>
+    <div>
+        <input type="password" id="id_password" placeholder="" name="formPassword" required>
+        <label for="id_password">Password</label>
+    </div>
+    <div>
+        <input type="password" id="id_passwordr" placeholder="" name="formPasswordRepeat" required>
+        <label for="id_passwordr">Password (again)</label>
+    </div>
+    <button type="submit">Register</button>
+    <p>Уже есть аккаунт? <a class="dark-text register-link" aria-current="page" href="/login"><u>Войти</u></a></p>
+</form>

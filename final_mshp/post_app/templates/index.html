@@ -1,0 +1,48 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Poster</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    {% comment %} {% include "navbar.html" %} {% endcomment %}
+    <h1>Welcome, take a look at our recent posts!</h1>
+    <hr>
+    <a href="/write/">Write post!</a>
+    <br><hr>
+    {% if user.is_authenticated %}
+        <h3>{{ user.username }}</h3>
+        <form action="/logout/" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Logout">
+        </form>
+    {% else %}
+        <h3>Have an account?</h3>
+        <ul>
+            <h3><a href="{% url 'login' %}">Login</a></h3>
+            <h3><a href="{% url 'signup' %}">Sign up</a></h3>
+        </ul>
+    {% endif %}
+    <hr>
+
+    {% for post in all_posts %}
+        <div>
+            <a href="{% url 'post_detail' post.id %}">
+                <h3>{{ post.author }}</h3>
+                <h4>{{ post.title }}</h4>
+                <h5>{{ post.publish_date }}</h5>
+                <h5> Likes: {{ post.likes }}, Dislikes: {{ post.dislikes }}</h5>
+            </a>
+            <hr>
+        </div>
+    {% endfor %}
+</body>
+</html>

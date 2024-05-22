@@ -1,0 +1,17 @@
+{% load static %}
+
+
+<form action="/login/" method="post">
+    {% csrf_token %}
+    <h2>Logging</h2>
+    <div>
+        <input type="text" id="id_login" autofocus placeholder="" name="username" required>
+        <label for="id_login">Login</label>
+    </div>
+    <div>
+        <input type="password" class="form-control" id="id_password" placeholder="" name="password" required>
+        <label for="id_password">Password</label>
+    </div>
+    <button type="submit">Log In</button>
+    <p >Нет аккаунта? <a aria-current="page" href="/signup"><u>Register</u></a></p>
+</form>

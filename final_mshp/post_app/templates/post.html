@@ -1,0 +1,36 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post №{{ post.id }}</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <h1>Post №{{ post.id }}</h1>
+    <br>
+    <h3>{{ post.author }}</h3>
+    <br>
+    <h4>{{ post.title }}</h4>
+    <p>{{ post.content }}</p>
+    <br>
+    <h5>{{ post.publish_date }} {{ post.likes }} {{ post.dislikes }}</h5>
+    <form method="post" action="{% url 'rate_post' post.id %}">
+        {% csrf_token %}
+        <div class="form-check mt-3">
+            <input type="radio" name="like" value="like" id="poll_type1" checked>
+            <label for="poll_type1">Like</label>
+        </div>
+        <div class="form-check mt-3">
+            <input type="radio" name="like" value="dislike" id="poll_type2">
+            <label for="poll_type2">Dislike</label>
+        </div>
+        <button type="submit" name="vote">Vote</button>
+    </form>
+</body>
+</html>
