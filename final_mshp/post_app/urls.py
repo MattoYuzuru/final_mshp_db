@@ -5,6 +5,7 @@ from django.contrib.auth import views as as_views
 
 urlpatterns = [
     path('main/', views.main_page, name='main'),
+    path('main/page/<int:page_num>', views.main_page, name='paginator'),
     path('write/', views.write_page, name='write'),
     path('write/post/', views.post_to_db, name='post_to_db'),
     path("post/rate/<int:post_id>/", views.rate_post, name="rate_post"),

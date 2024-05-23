@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.core.paginator import Paginator
 from post_app.models import Post, Vote
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -7,10 +7,14 @@ from django.contrib.auth import login, logout
 from secrets import compare_digest
 
 
-def main_page(request):
+def main_page(request, page_num=1):
+
     all_posts = Post.objects.all()
+    per_page = 5
+    paginator = Paginator(all_posts, per_page=per_page)
+    paginated_posts = paginator.page(page_num)
     context = {
-        "all_posts": all_posts,
+        "all_posts": paginated_posts,
     }
     return render(request, 'index.html', context)
 
