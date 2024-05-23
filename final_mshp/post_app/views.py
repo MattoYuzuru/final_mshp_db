@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
-from post_app.models import Post, Vote
+from post_app.models import Post, Vote, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
+from django.contrib.auth import login
 from secrets import compare_digest
+from django.urls import reverse
 
 
 def main_page(request, page_num=1):
@@ -21,9 +22,12 @@ def main_page(request, page_num=1):
 
 def post_detail_page(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
+    comments = Comment.objects.filter(post=post_id)
+    print(comments)
     context = {
         "post": post,
-    }
+        "comments": comments,
+    } 
     return render(request, 'post.html', context)
 
 
@@ -128,3 +132,17 @@ def rate_post(request, post_id):
     #         'dislikes_count': post.dislikes
     #     })
     return redirect('main')
+
+
+def comment(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment_text', '')
+        comment = Comment(
+            post=post,
+            author=request.user,
+            content=comment_text,
+        )
+        comment.save()
+
+    return redirect(reverse("post_detail", args=(post_id,)))

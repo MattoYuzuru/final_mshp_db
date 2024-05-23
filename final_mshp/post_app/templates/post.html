@@ -14,12 +14,12 @@
 <body>
     <h1>Post №{{ post.id }}</h1>
     <br>
-    <h3>{{ post.author }}</h3>
+    <h2>{{ post.author }}</h2>
     <br>
-    <h4>{{ post.title }}</h4>
+    <h3>{{ post.title }}</h3>
     <p>{{ post.content }}</p>
     <br>
-    <h5>{{ post.publish_date }} {{ post.likes }} {{ post.dislikes }}</h5>
+    <h4>{{ post.publish_date }} {{ post.likes }} {{ post.dislikes }}</h4>
     <form method="post" action="{% url 'rate_post' post.id %}">
         {% csrf_token %}
         <div class="form-check mt-3">
@@ -32,5 +32,19 @@
         </div>
         <button type="submit" name="vote">Vote</button>
     </form>
+    <h3>Make a comment about the article!</h3>
+    <form method="POST" action="{% url 'comment' post.id %}">
+        {% csrf_token %}
+        <textarea name="comment_text" style="height: 200px; font-size:20px;"></textarea>
+        <button type="submit" id="make_comment">Comment</button>
+    </form>
+    {% for comment in comments %}
+        <div>
+            <h3>{{ comment.author }}</h3>
+            <h4>{{ comment.content }}</h4>
+            <h5>{{ comment.create_date }}</h5>
+            <br>
+        </div>
+    {% endfor %}
 </body>
 </html>
