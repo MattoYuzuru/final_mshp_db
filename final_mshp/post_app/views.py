@@ -100,18 +100,14 @@ def rate_post(request, post_id):
         vote = Vote.objects.get(user=current_user, post=post_id)
         
         if rate == 'like' and vote.choice == 'like':
-            print(rate, vote.choice)
             pass
         elif rate == 'dislike' and vote.choice == 'dislike':
-            print(rate, vote.choice)
             pass
-        elif rate == 'like' and vote.choice == 'dislike':
-            print(rate, vote.choice)
+        elif rate == 'like' and (vote.choice == 'dislike' or vote.choice == ''):
             post.dislikes -= 1
             post.likes += 1
             vote.choice = 'like'
         else:
-            print(rate, vote.choice)
             post.dislikes += 1
             post.likes -= 1
             vote.choice = 'dislike'
@@ -126,12 +122,8 @@ def rate_post(request, post_id):
             post.dislikes += 1
             vote.choice = 'dislike'
     post.save()
-    # return JsonResponse({
-    #         'message': 'Vote successfully updated!',
-    #         'likes_count': post.likes,
-    #         'dislikes_count': post.dislikes
-    #     })
-    return redirect('main')
+
+    return redirect('main') 
 
 
 def comment(request, post_id):
@@ -143,6 +135,6 @@ def comment(request, post_id):
             author=request.user,
             content=comment_text,
         )
-        comment.save()
+        comment.save() 
 
     return redirect(reverse("post_detail", args=(post_id,)))
