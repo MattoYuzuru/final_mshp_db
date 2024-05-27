@@ -23,7 +23,7 @@ def main_page(request, page_num=1):
 def post_detail_page(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = Comment.objects.filter(post=post_id)
-    print(comments)
+    print('Comments', comments)
     context = {
         "post": post,
         "comments": comments,
@@ -92,9 +92,9 @@ def rate_post(request, post_id):
     rate = request.POST['like']
     voted_users = post.voters.all()
 
-    # for user in voted_users:
-    #     vote = Vote.objects.get(user=user, post=post)
-    #     print("!!! {}: {}".format(user, vote.choice))
+    for user in voted_users:
+        vote = Vote.objects.get(user=user, post=post)
+        print("!!! {}: {}, {}".format(user, vote.choice, rate))
 
     if current_user in voted_users:
         vote = Vote.objects.get(user=current_user, post=post_id)
@@ -122,6 +122,9 @@ def rate_post(request, post_id):
             post.dislikes += 1
             vote.choice = 'dislike'
     post.save()
+    vote.save()
+
+    print('After', current_user, vote.choice, rate)
 
     return redirect('main') 
 
@@ -130,11 +133,14 @@ def comment(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
         comment_text = request.POST.get('comment_text', '')
-        comment = Comment(
-            post=post,
-            author=request.user,
-            content=comment_text,
-        )
-        comment.save() 
+        if comment_text == '':
+            pass
+        else:
+            comment = Comment(
+                post=post,
+                author=request.user,
+                content=comment_text,
+            )
+            comment.save() 
 
     return redirect(reverse("post_detail", args=(post_id,)))
